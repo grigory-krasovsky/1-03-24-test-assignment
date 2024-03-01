@@ -1,0 +1,5 @@
+spring:
+  security:
+    jwt:
+      secret: zyKce8L+xMKIqUyF/PAX8HzsaqfmFGEPwGF4YWG3WXY=
+      expiresInMs: 86400000 # 24 hours
