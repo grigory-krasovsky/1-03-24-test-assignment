@@ -1,6 +1,7 @@
 package com.example._010324testassignment.model;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -8,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 
 @Data
+@NoArgsConstructor
 public class User implements UserDetails {
 
     private Collection<? extends GrantedAuthority> authorities;

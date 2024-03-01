@@ -5,25 +5,25 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
-import java.util.Collections;
 
 @EnableWebSecurity
 @Configuration
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
+    private final CustomAuthenticationManager customAuthenticationManager;
+
     @Value("${spring.security.jwt.secret}")
     private String jwtSecret;
+
+    public SecurityConfiguration(CustomAuthenticationManager customAuthenticationManager) {
+        this.customAuthenticationManager = customAuthenticationManager;
+    }
 
     @Bean
     public JwtAuthenticationFilter jwtAuthenticationFilter() {
@@ -46,17 +46,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     }
 
     @Override
-    @Bean
     public AuthenticationManager authenticationManagerBean() {
-        return authentication -> {
-            // Retrieve user credentials from the provided Authentication object
-            String username = authentication.getName();
-            String password = authentication.getCredentials().toString();
-            if ("user".equals(username) && "password".equals(password)) {
-                return new UsernamePasswordAuthenticationToken(username, password, Collections.emptyList());
-            } else {
-                throw new BadCredentialsException("Invalid username or password");
-            }
-        };
+        return customAuthenticationManager;
     }
 }
