@@ -1,6 +1,6 @@
 package com.example._010324testassignment.model;
 
-import com.example._010324testassignment.security.model.CustomUserDetails;
+import com.example._010324testassignment.security.CustomUserDetails;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

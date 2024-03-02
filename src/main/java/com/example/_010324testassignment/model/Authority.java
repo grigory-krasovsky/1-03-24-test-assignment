@@ -1,6 +1,6 @@
 package com.example._010324testassignment.model;
 
-import com.example._010324testassignment.security.model.CustomAuthority;
+import com.example._010324testassignment.security.CustomAuthority;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

@@ -1,4 +1,4 @@
-package com.example._010324testassignment.security.model;
+package com.example._010324testassignment.security;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
