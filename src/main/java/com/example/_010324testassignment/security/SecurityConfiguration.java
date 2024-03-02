@@ -1,6 +1,7 @@
 package com.example._010324testassignment.security;
 
 
+import com.example._010324testassignment.model.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -43,7 +44,7 @@ public class SecurityConfiguration {
                 .and()
                 .authorizeRequests()
                     .antMatchers("/authenticate").permitAll()
-                    .antMatchers("/test").hasAnyRole("ADMIN")
+                    .antMatchers("/test").hasAnyRole(Role.ADMIN.getRoleName())
                 .anyRequest().authenticated();
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
         return http.build();
