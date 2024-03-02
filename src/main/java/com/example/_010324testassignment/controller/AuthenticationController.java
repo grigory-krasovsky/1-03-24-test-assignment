@@ -4,11 +4,8 @@ import com.example._010324testassignment.security.CustomAuthenticationManager;
 import com.example._010324testassignment.security.JWTGenerator;
 import com.example._010324testassignment.web.AuthenticationRequest;
 import com.example._010324testassignment.web.AuthenticationResponse;
-import com.example._010324testassignment.security.model.CustomUserDetails;
-//import com.example._010324testassignment.security.JwtService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,7 +26,6 @@ public class AuthenticationController {
                 new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(), authenticationRequest.getPassword())
         );
 
-        CustomUserDetails customUserDetailsDetails =  new CustomUserDetails(authentication);
         String token = jwtGenerator.generateToken(authentication);
 
         return ResponseEntity.ok(new AuthenticationResponse(token));

@@ -21,9 +21,4 @@ public class CustomUserDetails implements UserDetails {
     private boolean credentialsNonExpired;
     private boolean enabled;
 
-    public CustomUserDetails(Authentication authentication) {
-        this.username = (String) authentication.getPrincipal();
-        this.password = (String) authentication.getCredentials();
-        this.authorities = authentication.getAuthorities();
-    }
 }
