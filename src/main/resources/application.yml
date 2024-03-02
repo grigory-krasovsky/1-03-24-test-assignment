@@ -1,4 +1,13 @@
 spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/compose-postgres
+    username: compose-postgres
+    password: compose-postgres
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+
   security:
     jwt:
       secret: zyKce8L+xMKIqUyF/PAX8HzsaqfmFGEPwGF4YWG3WXY=

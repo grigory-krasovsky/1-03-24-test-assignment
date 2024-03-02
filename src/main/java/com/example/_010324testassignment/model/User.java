@@ -1,28 +1,49 @@
 package com.example._010324testassignment.model;
 
+import com.example._010324testassignment.security.model.CustomUserDetails;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Collection;
+import javax.persistence.*;
+import java.util.List;
+import java.util.stream.Collectors;
 
+@Entity
+@Table(name = "users")
 @Data
+@AllArgsConstructor
 @NoArgsConstructor
-public class User implements UserDetails {
+public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    private Collection<? extends GrantedAuthority> authorities;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "user_authorities",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "authority_id")
+    )
+    private List<Authority> authorities;
+
     private String password;
     private String username;
-    private boolean accountNonExpired;
-    private boolean accountNonLocked;
-    private boolean credentialsNonExpired;
-    private boolean enabled;
+    private Boolean accountNonExpired;
+    private Boolean accountNonLocked;
+    private Boolean credentialsNonExpired;
+    private Boolean enabled;
 
-    public User (Authentication authentication) {
-        this.username = (String) authentication.getPrincipal();
-        this.password = (String) authentication.getCredentials();
-        this.authorities = authentication.getAuthorities();
+    public CustomUserDetails toCustomUserDetails() {
+        CustomUserDetails customUserDetails = new CustomUserDetails();
+        customUserDetails.setAuthorities(authorities.stream()
+                .map(Authority::toGrantedAuthority).collect(Collectors.toList()));
+        customUserDetails.setPassword(password);
+        customUserDetails.setUsername(username);
+        customUserDetails.setAccountNonExpired(accountNonExpired);
+        customUserDetails.setAccountNonLocked(accountNonLocked);
+        customUserDetails.setCredentialsNonExpired(credentialsNonExpired);
+        customUserDetails.setEnabled(enabled);
+        return customUserDetails;
     }
 }

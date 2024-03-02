@@ -1,9 +1,11 @@
 package com.example._010324testassignment.controller;
 
-import com.example._010324testassignment.model.AuthenticationRequest;
-import com.example._010324testassignment.model.AuthenticationResponse;
-import com.example._010324testassignment.model.User;
-import com.example._010324testassignment.security.JwtService;
+import com.example._010324testassignment.security.CustomAuthenticationManager;
+import com.example._010324testassignment.security.JWTGenerator;
+import com.example._010324testassignment.web.AuthenticationRequest;
+import com.example._010324testassignment.web.AuthenticationResponse;
+import com.example._010324testassignment.security.model.CustomUserDetails;
+//import com.example._010324testassignment.security.JwtService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -17,21 +19,19 @@ import org.springframework.web.bind.annotation.RestController;
 @AllArgsConstructor
 public class AuthenticationController {
 
-    private AuthenticationManager authenticationManager;
-    private JwtService jwtTokenService;
+    private CustomAuthenticationManager authenticationManager;
+    private JWTGenerator jwtGenerator;
 
     @PostMapping("/authenticate")
     public ResponseEntity<?> authenticate(@RequestBody AuthenticationRequest authenticationRequest) {
-        // Authenticate user
+
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(), authenticationRequest.getPassword())
         );
 
-        // If authentication is successful, generate JWT
-        User userDetails =  new User(authentication);
-        String token = jwtTokenService.generateToken(userDetails);
+        CustomUserDetails customUserDetailsDetails =  new CustomUserDetails(authentication);
+        String token = jwtGenerator.generateToken(authentication);
 
-        // Return the JWT
         return ResponseEntity.ok(new AuthenticationResponse(token));
     }
 }

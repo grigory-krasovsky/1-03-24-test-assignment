@@ -21,7 +21,6 @@ public class CustomAuthenticationManager implements AuthenticationManager {
         String username = authentication.getName();
         String password = authentication.getCredentials().toString();
 
-        // Retrieve user details from UserDetailsService
         UserDetails userDetails = userDetailsService.loadUserByUsername(username);
         if (userDetails.getPassword().equals(password)) {
             return new UsernamePasswordAuthenticationToken(username, password, userDetails.getAuthorities());
