@@ -1,6 +1,7 @@
 package com.example._010324testassignment.model;
 
 import com.example._010324testassignment.security.CustomUserDetails;
+import com.example._010324testassignment.web.UserResponse;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -45,5 +46,12 @@ public class User {
         customUserDetails.setCredentialsNonExpired(credentialsNonExpired);
         customUserDetails.setEnabled(enabled);
         return customUserDetails;
+    }
+
+    public UserResponse toUserResponse() {
+        return new UserResponse(this.username,
+                this.authorities.stream().map(Authority::toRole).collect(Collectors.toList()),
+                this.accountNonExpired && this.accountNonLocked && this.credentialsNonExpired && this.enabled
+        );
     }
 }

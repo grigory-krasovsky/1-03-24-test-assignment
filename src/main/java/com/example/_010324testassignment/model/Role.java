@@ -2,7 +2,9 @@ package com.example._010324testassignment.model;
 
 public enum Role {
     ADMIN,
-    USER;
+    TEACHER,
+    STUDENT,
+    DIRECTOR;
 
     public String getRoleName() {
         return name();

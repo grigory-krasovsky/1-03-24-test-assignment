@@ -41,11 +41,11 @@ public class SecurityConfiguration {
         http
                 .csrf().disable()
                 .exceptionHandling()
-                    .authenticationEntryPoint(authEntryPoint)
+                .authenticationEntryPoint(authEntryPoint)
                 .and()
                 .authorizeRequests()
-                    .antMatchers("/api/authenticate").permitAll()
-                    .antMatchers("/api/test").hasAnyRole(Role.ADMIN.getRoleName())
+                .antMatchers("/api/authenticate").permitAll()
+                .antMatchers("/api/users").hasAnyAuthority(Role.ADMIN.getRoleName())
                 .anyRequest().authenticated();
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
         return http.build();

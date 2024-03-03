@@ -24,4 +24,8 @@ public class Authority {
     public CustomAuthority toGrantedAuthority() {
         return new CustomAuthority(authority);
     }
+
+    public Role toRole() {
+        return Role.valueOf(authority);
+    }
 }
