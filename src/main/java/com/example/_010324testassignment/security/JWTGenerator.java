@@ -28,6 +28,7 @@ public class JWTGenerator {
 
         return Jwts.builder()
                 .setSubject(username)
+                .claim("roles", authentication.getAuthorities())
                 .setIssuedAt( new Date())
                 .setExpiration(expireDate)
                 .signWith(createKey(), SignatureAlgorithm.HS256)
