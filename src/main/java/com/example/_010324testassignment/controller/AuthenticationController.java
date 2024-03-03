@@ -19,7 +19,7 @@ public class AuthenticationController {
     private CustomAuthenticationManager authenticationManager;
     private JWTGenerator jwtGenerator;
 
-    @PostMapping("/authenticate")
+    @PostMapping("/api/authenticate")
     public ResponseEntity<?> authenticate(@RequestBody AuthenticationRequest authenticationRequest) {
 
         Authentication authentication = authenticationManager.authenticate(

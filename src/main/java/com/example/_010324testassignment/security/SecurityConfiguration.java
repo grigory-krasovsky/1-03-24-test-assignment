@@ -38,13 +38,14 @@ public class SecurityConfiguration {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.csrf().disable()
+        http
+                .csrf().disable()
                 .exceptionHandling()
-                .authenticationEntryPoint(authEntryPoint)
+                    .authenticationEntryPoint(authEntryPoint)
                 .and()
                 .authorizeRequests()
-                    .antMatchers("/authenticate").permitAll()
-                    .antMatchers("/test").hasAnyRole(Role.ADMIN.getRoleName())
+                    .antMatchers("/api/authenticate").permitAll()
+                    .antMatchers("/api/test").hasAnyRole(Role.ADMIN.getRoleName())
                 .anyRequest().authenticated();
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
         return http.build();
