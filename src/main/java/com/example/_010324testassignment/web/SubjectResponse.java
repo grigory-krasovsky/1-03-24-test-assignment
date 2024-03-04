@@ -7,10 +7,8 @@ import java.util.List;
 
 @AllArgsConstructor
 @Data
-public class UserResponse {
+public class SubjectResponse {
     private Long id;
-    private String username;
-    private String password;
-    private List<RoleResponse> role;
-    boolean active;
+    private String name;
+    private List<UserResponse> users;
 }

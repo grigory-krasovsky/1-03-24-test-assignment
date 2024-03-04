@@ -5,6 +5,7 @@ import com.example._010324testassignment.model.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -45,8 +46,13 @@ public class SecurityConfiguration {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/api/authenticate").permitAll()
-                .antMatchers("/api/users").hasAnyAuthority(Role.ADMIN.getRoleName())
+                .antMatchers(HttpMethod.GET, "/api/users").hasAnyAuthority(Role.ADMIN.getRoleName(), Role.DIRECTOR.getRoleName())
+                .antMatchers(HttpMethod.POST, "/api/users").hasAnyAuthority(Role.ADMIN.getRoleName())
+                .antMatchers(HttpMethod.DELETE, "/api/users").hasAnyAuthority(Role.ADMIN.getRoleName())
                 .antMatchers("/api/roles").hasAnyAuthority(Role.ADMIN.getRoleName())
+                .antMatchers("/api/subjects").hasAnyAuthority(
+                        Role.DIRECTOR.getRoleName(), Role.TEACHER.getRoleName(), Role.STUDENT.getRoleName()
+                )
                 .anyRequest().authenticated();
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
         return http.build();

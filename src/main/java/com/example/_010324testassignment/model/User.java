@@ -53,7 +53,7 @@ public class User {
                 this.id,
                 this.username,
                 this.password,
-                this.authorities.stream().map(Authority::toRole).collect(Collectors.toList()),
+                this.authorities.stream().map(Authority::toRoleResponse).collect(Collectors.toList()),
                 this.accountNonExpired && this.accountNonLocked && this.credentialsNonExpired && this.enabled
         );
     }

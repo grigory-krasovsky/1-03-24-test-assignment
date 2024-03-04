@@ -3,7 +3,6 @@ package com.example._010324testassignment.web;
 import com.example._010324testassignment.model.Authority;
 import com.example._010324testassignment.model.Role;
 import com.example._010324testassignment.model.User;
-import com.example._010324testassignment.security.CustomAuthority;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -15,7 +14,7 @@ public class UserRequest {
     private Long id;
     private String username;
     private String password;
-    private List<Role> role;
+    private List<RoleRequest> roles;
     boolean active;
 
     public User toUser(List<Authority> authorities) {

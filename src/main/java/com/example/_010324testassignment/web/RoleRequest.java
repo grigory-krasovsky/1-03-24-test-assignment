@@ -6,7 +6,7 @@ import lombok.Data;
 
 @AllArgsConstructor
 @Data
-public class RoleResponse {
+public class RoleRequest {
     private Long id;
     private Role displayName;
 }

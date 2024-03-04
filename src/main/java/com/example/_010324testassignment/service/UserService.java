@@ -5,13 +5,14 @@ import com.example._010324testassignment.model.Role;
 import com.example._010324testassignment.model.User;
 import com.example._010324testassignment.repository.AuthorityRepository;
 import com.example._010324testassignment.repository.UserRepository;
+import com.example._010324testassignment.web.RoleRequest;
 import com.example._010324testassignment.web.UserRequest;
 import com.example._010324testassignment.web.UserResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -19,6 +20,7 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final AuthorityRepository authorityRepository;
+    private final RoleService roleService;
 
     public List<User> getAllUsers() {
         return userRepository.findAll();
@@ -29,8 +31,15 @@ public class UserService {
     }
 
     public UserResponse addUser(UserRequest userRequest) {
-        Optional<Authority> authority = authorityRepository.findByAuthority(Role.ADMIN.getRoleName());
-        User savedUser = userRepository.save(userRequest.toUser(List.of(authority.get())));
+        List<Authority> roles = roleService
+                .getAllByRangeOfIds(userRequest.getRoles().stream()
+                        .map(RoleRequest::getId)
+                        .collect(Collectors.toList()));
+        User savedUser = userRepository.save(userRequest.toUser(roles));
         return savedUser.toUserResponse();
+    }
+
+    List<User> getAllByRangeOfIds(List<Long> ids) {
+        return userRepository.findByIdIn(ids);
     }
 }
