@@ -38,7 +38,7 @@ public class SecurityConfiguration {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http
+        http.cors().and()
                 .csrf().disable()
                 .exceptionHandling()
                 .authenticationEntryPoint(authEntryPoint)
@@ -46,6 +46,7 @@ public class SecurityConfiguration {
                 .authorizeRequests()
                 .antMatchers("/api/authenticate").permitAll()
                 .antMatchers("/api/users").hasAnyAuthority(Role.ADMIN.getRoleName())
+                .antMatchers("/api/roles").hasAnyAuthority(Role.ADMIN.getRoleName())
                 .anyRequest().authenticated();
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
         return http.build();

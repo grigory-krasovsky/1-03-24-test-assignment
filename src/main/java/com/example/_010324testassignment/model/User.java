@@ -49,7 +49,10 @@ public class User {
     }
 
     public UserResponse toUserResponse() {
-        return new UserResponse(this.username,
+        return new UserResponse(
+                this.id,
+                this.username,
+                this.password,
                 this.authorities.stream().map(Authority::toRole).collect(Collectors.toList()),
                 this.accountNonExpired && this.accountNonLocked && this.credentialsNonExpired && this.enabled
         );

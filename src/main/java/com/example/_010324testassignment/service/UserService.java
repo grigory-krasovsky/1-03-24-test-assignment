@@ -1,19 +1,36 @@
 package com.example._010324testassignment.service;
 
+import com.example._010324testassignment.model.Authority;
+import com.example._010324testassignment.model.Role;
 import com.example._010324testassignment.model.User;
+import com.example._010324testassignment.repository.AuthorityRepository;
 import com.example._010324testassignment.repository.UserRepository;
+import com.example._010324testassignment.web.UserRequest;
+import com.example._010324testassignment.web.UserResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
 public class UserService {
 
     private final UserRepository userRepository;
+    private final AuthorityRepository authorityRepository;
 
     public List<User> getAllUsers() {
         return userRepository.findAll();
+    }
+
+    public void deleteUser(Long id) {
+        userRepository.deleteById(id);
+    }
+
+    public UserResponse addUser(UserRequest userRequest) {
+        Optional<Authority> authority = authorityRepository.findByAuthority(Role.ADMIN.getRoleName());
+        User savedUser = userRepository.save(userRequest.toUser(List.of(authority.get())));
+        return savedUser.toUserResponse();
     }
 }
