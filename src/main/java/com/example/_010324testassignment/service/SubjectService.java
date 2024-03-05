@@ -1,18 +1,21 @@
 package com.example._010324testassignment.service;
 
+import com.example._010324testassignment.model.Authority;
+import com.example._010324testassignment.model.Grade;
 import com.example._010324testassignment.model.Subject;
 import com.example._010324testassignment.model.User;
+import com.example._010324testassignment.model.enums.Role;
+import com.example._010324testassignment.repository.GradeRepository;
 import com.example._010324testassignment.repository.SubjectRepository;
 import com.example._010324testassignment.web.SubjectRequest;
 import com.example._010324testassignment.web.SubjectResponse;
+import com.example._010324testassignment.web.SubjectUsersGradesResponse;
 import com.example._010324testassignment.web.UserRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 @Service
@@ -20,6 +23,7 @@ import java.util.stream.Collectors;
 public class SubjectService {
     private final SubjectRepository subjectRepository;
     private final UserService userService;
+    private final GradeRepository gradeRepository;
 
     public List<SubjectResponse> getAllSubjects() {
         return subjectRepository.findAll().stream().map(Subject::toSubjectResponse).collect(Collectors.toList());
@@ -52,5 +56,35 @@ public class SubjectService {
 
     public Subject getByName(String subjectName) {
         return subjectRepository.findByName(subjectName);
+    }
+
+
+    public List<SubjectUsersGradesResponse> getSubjectsUsersGrades(List<Subject> subjects) {
+        Map<String, List<Subject>> collect = subjects.stream().collect(Collectors.groupingBy(Subject::getName));
+        AtomicReference<List<Subject>> subjectsForProcess = new AtomicReference<>();
+        AtomicReference<List<User>> usersForProcess = new AtomicReference<>();
+        collect.keySet().forEach(subjectName -> {
+            subjectsForProcess.set(collect.get(subjectName));
+            usersForProcess.set(collect.get(subjectName).stream().filter(s -> subjectName.equals(s.getName())).findFirst().get().getUsers());
+        });
+
+        return getGradesByUserAndSubject(subjectsForProcess.get(), usersForProcess.get());
+    }
+
+    private List<SubjectUsersGradesResponse> getGradesByUserAndSubject(List<Subject> subjects, List<User> users) {
+        List<SubjectUsersGradesResponse> result = new ArrayList<>();
+        for (Subject subject : subjects) {
+            SubjectUsersGradesResponse subjectUsersGradesResponse = new SubjectUsersGradesResponse();
+            subjectUsersGradesResponse.setSubjectName(subject.getName());
+            subjectUsersGradesResponse.setUserGradesMap(new HashMap<>());
+            for (User user: users) {
+                if (user.getAuthorities().stream().map(Authority::toRole).toList().contains(Role.TEACHER)) continue;
+                List<Grade> byUserAndSubject = gradeRepository.findByUserAndSubject(user, subject);
+                subjectUsersGradesResponse.getUserGradesMap()
+                        .put(user.getUsername(), byUserAndSubject.stream().map(Grade::getGrade).collect(Collectors.toList()));
+            }
+            result.add(subjectUsersGradesResponse);
+        }
+        return result;
     }
 }

@@ -1,6 +1,7 @@
 package com.example._010324testassignment.service;
 
 import com.example._010324testassignment.model.Authority;
+import com.example._010324testassignment.model.Subject;
 import com.example._010324testassignment.model.User;
 import com.example._010324testassignment.repository.AuthorityRepository;
 import com.example._010324testassignment.repository.UserRepository;
@@ -11,6 +12,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -46,4 +48,5 @@ public class UserService {
     public Optional<User> getByUsername(String name) {
         return userRepository.findByUsername(name);
     }
+
 }
