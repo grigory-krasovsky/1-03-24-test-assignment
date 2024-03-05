@@ -56,6 +56,7 @@ public class SecurityConfiguration {
                 .antMatchers("/api/subjects").hasAnyAuthority(
                         Role.DIRECTOR.getRoleName(), Role.TEACHER.getRoleName(), Role.STUDENT.getRoleName()
                 )
+                .antMatchers("/api/groups").hasAnyAuthority(Role.DIRECTOR.getRoleName(), Role.TEACHER.getRoleName())
                 .anyRequest().authenticated();
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
         return http.build();

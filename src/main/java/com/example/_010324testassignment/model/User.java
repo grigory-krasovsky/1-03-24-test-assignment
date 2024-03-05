@@ -1,6 +1,7 @@
 package com.example._010324testassignment.model;
 
 import com.example._010324testassignment.security.CustomUserDetails;
+import com.example._010324testassignment.web.GroupResponse;
 import com.example._010324testassignment.web.UserResponse;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -28,6 +29,10 @@ public class User {
     )
     private List<Authority> authorities;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "group_id")
+    private Group group;
+
     private String password;
     private String username;
     private Boolean accountNonExpired;
@@ -54,7 +59,10 @@ public class User {
                 this.username,
                 this.password,
                 this.authorities.stream().map(Authority::toRoleResponse).collect(Collectors.toList()),
-                this.accountNonExpired && this.accountNonLocked && this.credentialsNonExpired && this.enabled
+                this.accountNonExpired && this.accountNonLocked && this.credentialsNonExpired && this.enabled,
+                group != null ? new GroupResponse(group) : null
+
         );
     }
+
 }

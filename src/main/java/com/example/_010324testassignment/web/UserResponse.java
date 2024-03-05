@@ -12,5 +12,6 @@ public class UserResponse {
     private String username;
     private String password;
     private List<RoleResponse> role;
-    boolean active;
+    private boolean active;
+    private GroupResponse groupResponse;
 }
