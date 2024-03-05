@@ -8,5 +8,5 @@ import lombok.Data;
 public class RateRequest {
     private String targetStudent;
     private String targetSubject;
-    private String grade;
+    private Integer grade;
 }

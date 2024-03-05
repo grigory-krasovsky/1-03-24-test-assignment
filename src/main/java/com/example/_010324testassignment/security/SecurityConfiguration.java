@@ -50,6 +50,7 @@ public class SecurityConfiguration {
                 .antMatchers(HttpMethod.POST, "/api/users").hasAnyAuthority(Role.ADMIN.getRoleName())
                 .antMatchers(HttpMethod.DELETE, "/api/users").hasAnyAuthority(Role.ADMIN.getRoleName())
                 .antMatchers("/api/roles").hasAnyAuthority(Role.ADMIN.getRoleName())
+                .antMatchers("/api/reports/**").hasAnyAuthority(Role.REPORTS.getRoleName())
                 .antMatchers( "/api/grades").hasAnyAuthority(Role.TEACHER.getRoleName())
                 .antMatchers( "/api/grades/rate").hasAnyAuthority(Role.TEACHER.getRoleName())
                 .antMatchers( "/api/grades/me").hasAnyAuthority(Role.STUDENT.getRoleName())

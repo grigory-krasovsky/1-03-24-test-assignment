@@ -29,7 +29,7 @@ public class GradeController {
         gradeService.rateStudent(request);
     }
 
-    @GetMapping("")
+    @GetMapping
     public List<SubjectUsersGradesResponse> getGradesForSubjectsForStudent(@AuthenticationPrincipal UserDetails userDetails) {
         List<Subject> allSubjectsForUserId = subjectService.getAllSubjectsForUser(userDetails.getUsername());
         return subjectService.getSubjectsUsersGrades(allSubjectsForUserId);

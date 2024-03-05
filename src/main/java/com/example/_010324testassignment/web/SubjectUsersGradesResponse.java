@@ -13,5 +13,5 @@ import java.util.Map;
 @Data
 public class SubjectUsersGradesResponse {
     private String subjectName;
-    private Map<String, List<String>> userGradesMap;
+    private Map<String, List<Integer>> userGradesMap;
 }

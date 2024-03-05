@@ -24,5 +24,5 @@ public class Grade {
     @JoinColumn(name = "subject_id")
     private Subject subject;
 
-    private String grade;
+    private Integer grade;
 }

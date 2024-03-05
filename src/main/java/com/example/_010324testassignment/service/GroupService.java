@@ -30,7 +30,8 @@ public class GroupService {
         return new GroupResponse(
                 save.getId(),
                 save.getName(),
-                save.getUsers().stream().map(User::toUserResponse).collect(Collectors.toList()));
+                save.getUsers().stream().map(User::toUserResponse).collect(Collectors.toList())
+        );
     }
 
     public List<GroupResponse> getAllGroups() {

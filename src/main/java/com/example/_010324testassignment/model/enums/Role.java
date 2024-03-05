@@ -4,7 +4,8 @@ public enum Role {
     ADMIN,
     TEACHER,
     STUDENT,
-    DIRECTOR;
+    DIRECTOR,
+    REPORTS;
 
     public String getRoleName() {
         return name();

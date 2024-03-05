@@ -60,7 +60,7 @@ public class User {
                 this.password,
                 this.authorities.stream().map(Authority::toRoleResponse).collect(Collectors.toList()),
                 this.accountNonExpired && this.accountNonLocked && this.credentialsNonExpired && this.enabled,
-                group != null ? new GroupResponse(group) : null
+                group != null ? group.getName() : null
 
         );
     }

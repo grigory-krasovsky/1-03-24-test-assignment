@@ -21,4 +21,9 @@ public class Group {
 
     @OneToMany(mappedBy = "group", cascade = CascadeType.ALL)
     private List<User> users;
+
+    @Override
+    public String toString() {
+        return this.name;
+    }
 }

@@ -61,14 +61,15 @@ public class SubjectService {
 
     public List<SubjectUsersGradesResponse> getSubjectsUsersGrades(List<Subject> subjects) {
         Map<String, List<Subject>> collect = subjects.stream().collect(Collectors.groupingBy(Subject::getName));
-        AtomicReference<List<Subject>> subjectsForProcess = new AtomicReference<>();
-        AtomicReference<List<User>> usersForProcess = new AtomicReference<>();
-        collect.keySet().forEach(subjectName -> {
-            subjectsForProcess.set(collect.get(subjectName));
-            usersForProcess.set(collect.get(subjectName).stream().filter(s -> subjectName.equals(s.getName())).findFirst().get().getUsers());
-        });
+        List<Subject> subjectsForProcess = new ArrayList<>();
+        List<User> usersForProcess = new ArrayList<>();
 
-        return getGradesByUserAndSubject(subjectsForProcess.get(), usersForProcess.get());
+        for (String subjectName : collect.keySet()) {
+            subjectsForProcess.addAll(collect.get(subjectName));
+            usersForProcess.addAll(collect.get(subjectName).stream().filter(s -> subjectName.equals(s.getName())).findFirst().get().getUsers());
+        }
+
+        return getGradesByUserAndSubject(subjectsForProcess, usersForProcess);
     }
 
     private List<SubjectUsersGradesResponse> getGradesByUserAndSubject(List<Subject> subjects, List<User> users) {
@@ -79,6 +80,7 @@ public class SubjectService {
             subjectUsersGradesResponse.setUserGradesMap(new HashMap<>());
             for (User user: users) {
                 if (user.getAuthorities().stream().map(Authority::toRole).toList().contains(Role.TEACHER)) continue;
+                if (!subject.getUsers().contains(user)) continue;
                 List<Grade> byUserAndSubject = gradeRepository.findByUserAndSubject(user, subject);
                 subjectUsersGradesResponse.getUserGradesMap()
                         .put(user.getUsername(), byUserAndSubject.stream().map(Grade::getGrade).collect(Collectors.toList()));

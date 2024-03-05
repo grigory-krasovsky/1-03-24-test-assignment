@@ -15,6 +15,7 @@
             INSERT INTO authorities (authority) VALUES ('TEACHER');
             INSERT INTO authorities (authority) VALUES ('STUDENT');
             INSERT INTO authorities (authority) VALUES ('DIRECTOR');
+            INSERT INTO authorities (authority) VALUES ('REPORTS');
 
             CREATE TABLE IF NOT EXISTS users (
                                                  id SERIAL PRIMARY KEY,
