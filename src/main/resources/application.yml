@@ -7,8 +7,10 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
-
   security:
     jwt:
       secret: zyKce8L+xMKIqUyF/PAX8HzsaqfmFGEPwGF4YWG3WXY=
       expiresInMs: 86400000 # 24 hours
+  liquibase:
+    enabled: true
+    change-log: classpath:/db/changelog/db.changelog-master.yaml

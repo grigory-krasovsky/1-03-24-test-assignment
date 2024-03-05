@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.4.xsd">
+
+    <changeSet id="insert-data-example" author="grigory">
+        <sql>
+            CREATE TABLE IF NOT EXISTS authorities (
+                                                       id SERIAL PRIMARY KEY,
+                                                       authority VARCHAR(255) NOT NULL
+                );
+            INSERT INTO authorities (authority) VALUES ('ADMIN');
+            INSERT INTO authorities (authority) VALUES ('TEACHER');
+            INSERT INTO authorities (authority) VALUES ('STUDENT');
+            INSERT INTO authorities (authority) VALUES ('DIRECTOR');
+
+            CREATE TABLE IF NOT EXISTS users (
+                                                 id SERIAL PRIMARY KEY,
+                                                 account_non_expired BOOLEAN NOT NULL,
+                                                 account_non_locked BOOLEAN NOT NULL,
+                                                 credentials_non_expired BOOLEAN NOT NULL,
+                                                 enabled BOOLEAN NOT NULL,
+                                                 password VARCHAR(255) NOT NULL,
+                username VARCHAR(255) NOT NULL
+                );
+            INSERT INTO users (account_non_expired, account_non_locked, credentials_non_expired, enabled, password, username)
+            VALUES (true, true, true, true, 'admin', 'admin');
+
+            CREATE TABLE IF NOT EXISTS user_authorities (
+                                                            user_id SERIAL,
+                                                            authority_id SERIAL,
+                                                            PRIMARY KEY (user_id, authority_id),
+                FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+                FOREIGN KEY (authority_id) REFERENCES authorities(id) ON DELETE CASCADE
+                );
+
+-- Insert user_authority values if not exists
+            INSERT INTO user_authorities (user_id, authority_id)
+            SELECT u.id, a.id
+            FROM users u
+                     CROSS JOIN authorities a
+            WHERE u.username = 'admin' AND a.authority = 'ADMIN'
+                ON CONFLICT DO NOTHING;
+        </sql>
+    </changeSet>
+</databaseChangeLog>
