@@ -10,7 +10,9 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -23,7 +25,7 @@ public class SubjectService {
         return subjectRepository.findAll().stream().map(Subject::toSubjectResponse).collect(Collectors.toList());
     }
 
-    public void deleteUser(Long id) {
+    public void deleteSubject(Long id) {
         subjectRepository.deleteById(id);
     }
 
@@ -38,5 +40,17 @@ public class SubjectService {
         subject.setUsers(users);
         Subject savedSubject = subjectRepository.save(subject);
         return savedSubject.toSubjectResponse();
+    }
+
+    public List<Subject> getAllSubjectsForUser(String username) {
+        Optional<User> userOptional = userService.getByUsername(username);
+        if (userOptional.isPresent()) {
+            return subjectRepository.findSubjectsByUserId(userOptional.get().getId());
+        }
+        return Collections.emptyList();
+    }
+
+    public Subject getByName(String subjectName) {
+        return subjectRepository.findByName(subjectName);
     }
 }

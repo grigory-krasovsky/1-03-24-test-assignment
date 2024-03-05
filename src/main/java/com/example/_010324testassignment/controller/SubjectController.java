@@ -24,7 +24,7 @@ public class SubjectController {
     @DeleteMapping("/{id}")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void deleteUser(@PathVariable Long id) {
-        subjectService.deleteUser(id);
+        subjectService.deleteSubject(id);
     }
 
     @PostMapping

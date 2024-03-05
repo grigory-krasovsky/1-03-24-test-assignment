@@ -1,6 +1,6 @@
 package com.example._010324testassignment.web;
 
-import com.example._010324testassignment.model.Role;
+import com.example._010324testassignment.model.enums.Role;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 

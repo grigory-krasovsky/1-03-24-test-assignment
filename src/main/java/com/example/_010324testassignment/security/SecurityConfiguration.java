@@ -1,7 +1,7 @@
 package com.example._010324testassignment.security;
 
 
-import com.example._010324testassignment.model.Role;
+import com.example._010324testassignment.model.enums.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -50,6 +50,7 @@ public class SecurityConfiguration {
                 .antMatchers(HttpMethod.POST, "/api/users").hasAnyAuthority(Role.ADMIN.getRoleName())
                 .antMatchers(HttpMethod.DELETE, "/api/users").hasAnyAuthority(Role.ADMIN.getRoleName())
                 .antMatchers("/api/roles").hasAnyAuthority(Role.ADMIN.getRoleName())
+                .antMatchers( "/api/grades").hasAnyAuthority(Role.TEACHER.getRoleName())
                 .antMatchers("/api/subjects").hasAnyAuthority(
                         Role.DIRECTOR.getRoleName(), Role.TEACHER.getRoleName(), Role.STUDENT.getRoleName()
                 )

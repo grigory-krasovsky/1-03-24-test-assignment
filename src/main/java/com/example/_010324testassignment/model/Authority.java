@@ -1,5 +1,6 @@
 package com.example._010324testassignment.model;
 
+import com.example._010324testassignment.model.enums.Role;
 import com.example._010324testassignment.security.CustomAuthority;
 import com.example._010324testassignment.web.RoleResponse;
 import lombok.AllArgsConstructor;

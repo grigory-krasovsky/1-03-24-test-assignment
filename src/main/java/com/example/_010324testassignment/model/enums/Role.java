@@ -1,4 +1,4 @@
-package com.example._010324testassignment.model;
+package com.example._010324testassignment.model.enums;
 
 public enum Role {
     ADMIN,

@@ -1,7 +1,6 @@
 package com.example._010324testassignment.service;
 
 import com.example._010324testassignment.model.Authority;
-import com.example._010324testassignment.model.Role;
 import com.example._010324testassignment.model.User;
 import com.example._010324testassignment.repository.AuthorityRepository;
 import com.example._010324testassignment.repository.UserRepository;
@@ -12,6 +11,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -39,7 +39,11 @@ public class UserService {
         return savedUser.toUserResponse();
     }
 
-    List<User> getAllByRangeOfIds(List<Long> ids) {
+    public List<User> getAllByRangeOfIds(List<Long> ids) {
         return userRepository.findByIdIn(ids);
+    }
+
+    public Optional<User> getByUsername(String name) {
+        return userRepository.findByUsername(name);
     }
 }
